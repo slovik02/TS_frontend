@@ -1,0 +1,44 @@
+/* HomePage.css */
+.home-page {
+    text-align: center;
+    padding: 2rem;
+}
+
+.home-page h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.home-page p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.home-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.large-button {
+    font-size: 2rem !important;
+    padding: 1rem 2rem !important;
+    width: 450px !important;
+    height: 50px !important;
+    background-color: #8d5642 !important;
+    color: black !important;
+}
+
+.large-button span:first-child {
+    margin-bottom: 0.5rem; /* Add spacing between main text and caption */
+    font-size: 1.5rem; /* Reduce font size for caption */
+}
+
+.large-button span:last-child {
+    font-size: 0.75rem; /* Set font size for caption */
+}
+
+.MuiButton-outlined {
+    border-color: transparent !important; /* To make sure the outlined style does not interfere */
+}
+

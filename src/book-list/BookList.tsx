@@ -17,6 +17,7 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import TableHead from '@mui/material/TableHead';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import MenuAppBar from '../app-bar/AppBar';
 
 // changes of pages
 interface TablePaginationActionsProps {
@@ -226,77 +227,92 @@ export default function BookList() {
   };
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Box sx={{ width: 700, marginBottom: '1rem' }}>
-        <Typography variant="h5" gutterBottom>
-          List of Books
-        </Typography>
-      </Box>
-      <TextField
-        fullWidth
-        sx={{ width: 700 }}
-        label="Find the book"
-        variant="outlined"
-      />
-      <Box sx={{ width: '80%', marginTop: '1rem' }}>
-        <TableContainer component={Paper}>
-          <Table aria-label="custom pagination table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="center">ID</TableCell>
-                <TableCell align="center">Title</TableCell>
-                <TableCell align="center">Author</TableCell>
-                <TableCell align="center">ISBN</TableCell>
-                <TableCell align="center">Publisher</TableCell>
-                <TableCell align="center">Year of Publish</TableCell>
-                <TableCell align="center">Available Copies</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {(rowsPerPage > 0
-                ? rows.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage,
-                  )
-                : rows
-              ).map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell align="center">{row.id}</TableCell>
-                  <TableCell align="center">{row.title}</TableCell>
-                  <TableCell align="center">{row.author}</TableCell>
-                  <TableCell align="center">{row.isbn}</TableCell>
-                  <TableCell align="center">{row.publisher}</TableCell>
-                  <TableCell align="center">{row.yearOfPublish}</TableCell>
-                  <TableCell align="center">{row.availableCopies}</TableCell>
+    <>
+      <MenuAppBar></MenuAppBar>
+      <Box
+        sx={{
+          width: '100%',
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            width: 700,
+            marginBottom: '1rem',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h5" gutterBottom>
+            List of Books
+          </Typography>
+        </Box>
+        <TextField
+          fullWidth
+          sx={{ width: 700 }}
+          label="Find the book"
+          variant="outlined"
+        />
+        <Box sx={{ width: '80%', marginTop: '1rem' }}>
+          <TableContainer component={Paper}>
+            <Table aria-label="custom pagination table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="center">ID</TableCell>
+                  <TableCell align="center">Title</TableCell>
+                  <TableCell align="center">Author</TableCell>
+                  <TableCell align="center">ISBN</TableCell>
+                  <TableCell align="center">Publisher</TableCell>
+                  <TableCell align="center">Year of Publish</TableCell>
+                  <TableCell align="center">Available Copies</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                  colSpan={7}
-                  count={rows.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                  ActionsComponent={TablePaginationActions}
-                />
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {(rowsPerPage > 0
+                  ? rows.slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage,
+                    )
+                  : rows
+                ).map((row) => (
+                  <TableRow key={row.id}>
+                    <TableCell align="center">{row.id}</TableCell>
+                    <TableCell align="center">{row.title}</TableCell>
+                    <TableCell align="center">{row.author}</TableCell>
+                    <TableCell align="center">{row.isbn}</TableCell>
+                    <TableCell align="center">{row.publisher}</TableCell>
+                    <TableCell align="center">{row.yearOfPublish}</TableCell>
+                    <TableCell align="center">{row.availableCopies}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    rowsPerPageOptions={[
+                      5,
+                      10,
+                      25,
+                      { label: 'All', value: -1 },
+                    ]}
+                    colSpan={7}
+                    count={rows.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    ActionsComponent={TablePaginationActions}
+                  />
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </TableContainer>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }

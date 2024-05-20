@@ -1,0 +1,9 @@
+.loan-list-container {
+    text-align: center;
+    padding: 2rem;
+}
+
+.loan-list-container h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
