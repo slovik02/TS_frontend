@@ -17,9 +17,14 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import TableHead from '@mui/material/TableHead';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import MenuAppBar from '../app-bar/AppBar';
+import './LoanList.css';
+import { useNavigate } from 'react-router-dom';
+import { LibraryClient } from '../api/library-client';
+import { useApi } from '../api/ApiProvider';
+import { useEffect } from 'react';
 
-// changes of pages
 interface TablePaginationActionsProps {
   count: number;
   page: number;
@@ -30,7 +35,6 @@ interface TablePaginationActionsProps {
   ) => void;
 }
 
-// change the page
 function TablePaginationActions(props: TablePaginationActionsProps) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
@@ -101,96 +105,24 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   );
 }
 
-function createData(
-  ID: number,
-  RentalDate: Date,
-  EndDate: Date,
-  ReturnDate: Date | null,
-  UserID: number,
-  BookID: number,
-) {
-  return { ID, RentalDate, EndDate, ReturnDate, UserID, BookID };
-}
-
-//data was prepared by ChatGPT
-const rows = [
-  createData(
-    1,
-    new Date('2024-05-01'),
-    new Date('2024-06-01'),
-    new Date('2024-05-25'),
-    1001,
-    2001,
-  ),
-  createData(
-    2,
-    new Date('2024-05-10'),
-    new Date('2024-06-10'),
-    new Date('2024-06-05'),
-    1002,
-    2002,
-  ),
-  createData(
-    3,
-    new Date('2024-05-15'),
-    new Date('2024-06-15'),
-    null,
-    1003,
-    2003,
-  ),
-  createData(
-    4,
-    new Date('2024-04-20'),
-    new Date('2024-05-20'),
-    new Date('2024-05-15'),
-    1004,
-    2004,
-  ),
-  createData(
-    5,
-    new Date('2024-04-25'),
-    new Date('2024-05-25'),
-    new Date('2024-05-20'),
-    1005,
-    2005,
-  ),
-  createData(
-    6,
-    new Date('2024-05-05'),
-    new Date('2024-06-05'),
-    new Date('2024-06-01'),
-    1006,
-    2006,
-  ),
-  createData(
-    7,
-    new Date('2024-05-08'),
-    new Date('2024-06-08'),
-    new Date('2024-06-04'),
-    1007,
-    2007,
-  ),
-  createData(
-    8,
-    new Date('2024-05-12'),
-    new Date('2024-06-12'),
-    null,
-    1008,
-    2008,
-  ),
-  createData(
-    9,
-    new Date('2024-05-14'),
-    new Date('2024-06-14'),
-    null,
-    1009,
-    2009,
-  ),
-];
-
 export default function LoanList() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setLoans] = React.useState<any[]>([]);
+
+  const navigate = useNavigate();
+  const apiClient: LibraryClient = useApi();
+
+  useEffect(() => {
+    apiClient.getLoans().then((response) => {
+      console.log(response);
+      setLoans(response.data);
+    });
+  }, [apiClient]);
+
+  const handleAddLoanClick = () => {
+    navigate('/addloan');
+  };
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -204,6 +136,11 @@ export default function LoanList() {
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const formatDate = (date: string) => {
+    const dateObj = new Date(date);
+    return !isNaN(dateObj.getTime()) ? dateObj.toDateString() : 'Invalid Date';
   };
 
   return (
@@ -252,25 +189,25 @@ export default function LoanList() {
               </TableHead>
               <TableBody>
                 {(rowsPerPage > 0
-                  ? rows.slice(
+                  ? rows?.slice(
                       page * rowsPerPage,
                       page * rowsPerPage + rowsPerPage,
                     )
                   : rows
-                ).map((row) => (
-                  <TableRow key={row.ID}>
-                    <TableCell align="center">{row.ID}</TableCell>
+                )?.map((row) => (
+                  <TableRow key={row.loanId}>
+                    <TableCell align="center">{row.loanId}</TableCell>
                     <TableCell align="center">
-                      {row.RentalDate.toDateString()}
+                      {formatDate(row.rentalDate)}
                     </TableCell>
                     <TableCell align="center">
-                      {row.EndDate.toDateString()}
+                      {formatDate(row.endDate)}
                     </TableCell>
                     <TableCell align="center">
-                      {row.ReturnDate ? row.ReturnDate.toDateString() : 'N/A'}
+                      {row.returnDate ? formatDate(row.returnDate) : 'N/A'}
                     </TableCell>
-                    <TableCell align="center">{row.UserID}</TableCell>
-                    <TableCell align="center">{row.BookID}</TableCell>
+                    <TableCell align="center">{row.user?.user_id}</TableCell>
+                    <TableCell align="center">{row.book?.id}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -284,7 +221,7 @@ export default function LoanList() {
                       { label: 'All', value: -1 },
                     ]}
                     colSpan={6}
-                    count={rows.length}
+                    count={rows != null ? rows.length : 0}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
@@ -295,6 +232,15 @@ export default function LoanList() {
               </TableFooter>
             </Table>
           </TableContainer>
+          <Box mt={2}>
+            <Button
+              variant="contained"
+              className="add-loan"
+              onClick={handleAddLoanClick}
+            >
+              Add Loan
+            </Button>
+          </Box>
         </Box>
       </Box>
     </>

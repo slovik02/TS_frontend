@@ -13,19 +13,29 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import LoginIcon from '@mui/icons-material/Login';
+import { ClientResponse, LibraryClient } from '../api/library-client';
+import { useApi } from '../api/ApiProvider';
+import { LoginResponseDto } from '../api/dto/login.dto';
 
 function LoginForm() {
   const navigate = useNavigate();
+  const apiClient: LibraryClient = useApi();
 
   const onSubmit = useCallback(
     (
       values: { username: string; password: string; role: string },
       formik: any,
     ) => {
-      navigate('/homepage');
-      console.log('/homepage');
+      apiClient.login(values).then((response) => {
+        console.log(response);
+        if (response.success) {
+          navigate('/homepage');
+        } else {
+          formik.setFieldError('username', 'Invalid username or password');
+        }
+      });
     },
-    [navigate],
+    [apiClient, navigate],
   );
 
   const validationSchema = useMemo(

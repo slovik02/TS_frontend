@@ -14,6 +14,10 @@ function HomePage() {
     navigate('/loanlist');
   };
 
+  const handleListOfUsersClick = () => {
+    navigate('/userlist');
+  };
+
   return (
     <div className="home-page-container">
       <div className="home-page">
@@ -35,7 +39,11 @@ function HomePage() {
         >
           List of loans
         </Button>
-        <Button className="large-button" variant="contained">
+        <Button
+          className="large-button"
+          variant="contained"
+          onClick={handleListOfUsersClick}
+        >
           List of users
         </Button>
       </Stack>

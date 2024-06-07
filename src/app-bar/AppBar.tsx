@@ -20,7 +20,9 @@ export default function MenuAppBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
+      {' '}
+      {/* Set position to fixed */}
       <Toolbar sx={{ backgroundColor: '#8d5642' }}>
         <IconButton
           size="large"

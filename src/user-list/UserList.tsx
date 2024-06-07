@@ -17,20 +17,14 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import TableHead from '@mui/material/TableHead';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import { Button } from '@mui/material';
-import './BookList.css';
+import Button from '@mui/material/Button';
+import MenuAppBar from '../app-bar/AppBar';
+import './UserList.css';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useEffect } from 'react';
 import { LibraryClient } from '../api/library-client';
 import { useApi } from '../api/ApiProvider';
+import { useEffect } from 'react';
 
-// Changes of pages
 interface TablePaginationActionsProps {
   count: number;
   page: number;
@@ -41,7 +35,6 @@ interface TablePaginationActionsProps {
   ) => void;
 }
 
-// Change the page
 function TablePaginationActions(props: TablePaginationActionsProps) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
@@ -112,84 +105,23 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
   );
 }
 
-function MenuAppBar() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
-    <AppBar position="static">
-      <Toolbar sx={{ backgroundColor: '#8d5642' }}>
-        <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mr: 2 }}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Menu
-        </Typography>
-        <div>
-          <IconButton
-            size="large"
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleMenu}
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
-          <Menu
-            id="menu-appbar"
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-          </Menu>
-        </div>
-      </Toolbar>
-    </AppBar>
-  );
-}
-
-export default function BookList() {
+export default function UserList() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [rows, setBooks] = React.useState<any[]>([]);
+  const [rows, setUsers] = React.useState<any[]>([]);
 
   const navigate = useNavigate();
   const apiClient: LibraryClient = useApi();
 
   useEffect(() => {
-    apiClient.getBooks().then((response) => {
+    apiClient.getUsers().then((response) => {
       console.log(response);
-      setBooks(response.data);
+      setUsers(response.data);
     });
   }, [apiClient]);
 
   const handleAddClick = () => {
-    navigate('/addbook');
+    navigate('/adduser');
   };
 
   const handleChangePage = (
@@ -219,15 +151,22 @@ export default function BookList() {
           alignItems: 'center',
         }}
       >
-        <Box sx={{ width: 700, marginBottom: '1rem' }}>
+        <Box
+          sx={{
+            width: 700,
+            marginBottom: '1rem',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <Typography variant="h5" gutterBottom>
-            List of Books
+            List of Users
           </Typography>
         </Box>
         <TextField
           fullWidth
           sx={{ width: 700 }}
-          label="Find the book"
+          label="Find the user"
           variant="outlined"
         />
         <Box sx={{ width: '80%', marginTop: '1rem' }}>
@@ -236,12 +175,10 @@ export default function BookList() {
               <TableHead>
                 <TableRow>
                   <TableCell align="center">ID</TableCell>
-                  <TableCell align="center">Title</TableCell>
-                  <TableCell align="center">Author</TableCell>
-                  <TableCell align="center">ISBN</TableCell>
-                  <TableCell align="center">Publisher</TableCell>
-                  <TableCell align="center">Year of Publish</TableCell>
-                  <TableCell align="center">Available Copies</TableCell>
+                  <TableCell align="center">Full Name</TableCell>
+                  <TableCell align="center">Surname</TableCell>
+                  <TableCell align="center">Username</TableCell>
+                  <TableCell align="center">Email</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -252,14 +189,12 @@ export default function BookList() {
                     )
                   : rows
                 )?.map((row) => (
-                  <TableRow key={row.id}>
-                    <TableCell align="center">{row.id}</TableCell>
-                    <TableCell align="center">{row.title}</TableCell>
-                    <TableCell align="center">{row.author}</TableCell>
-                    <TableCell align="center">{row.isbn}</TableCell>
-                    <TableCell align="center">{row.publisher}</TableCell>
-                    <TableCell align="center">{row.yearOfPublish}</TableCell>
-                    <TableCell align="center">{row.availableCopies}</TableCell>
+                  <TableRow key={row.user_id}>
+                    <TableCell align="center">{row.user_id}</TableCell>
+                    <TableCell align="center">{row.full_name}</TableCell>
+                    <TableCell align="center">{row.surname}</TableCell>
+                    <TableCell align="center">{row.username}</TableCell>
+                    <TableCell align="center">{row.email}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -272,7 +207,7 @@ export default function BookList() {
                       25,
                       { label: 'All', value: -1 },
                     ]}
-                    colSpan={7}
+                    colSpan={5}
                     count={rows != null ? rows.length : 0}
                     rowsPerPage={rowsPerPage}
                     page={page}
@@ -284,13 +219,13 @@ export default function BookList() {
               </TableFooter>
             </Table>
           </TableContainer>
-          <Box mt={2} textAlign="left">
+          <Box mt={2}>
             <Button
               variant="contained"
-              className="add-loan"
+              className="add-user"
               onClick={handleAddClick}
             >
-              Add Book
+              Add User
             </Button>
           </Box>
         </Box>
