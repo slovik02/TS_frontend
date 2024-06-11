@@ -16,7 +16,6 @@ export default function AddLoan() {
   const apiClient = useApi();
 
   const handleAddLoan = () => {
-    // Define newLoan object with mandatory properties
     const newLoan: {
       userId: string;
       bookId: string;
@@ -30,7 +29,6 @@ export default function AddLoan() {
       endDate: endDate,
     };
 
-    // Optionally include the return date in the request if it's provided by the user
     if (returnDate) {
       newLoan.returnDate = returnDate;
     }

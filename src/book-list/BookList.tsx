@@ -192,6 +192,10 @@ export default function BookList() {
     navigate('/addbook');
   };
 
+  const handleDeleteClick = () => {
+    console.log('Delete book clicked');
+  };
+
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number,
@@ -284,13 +288,21 @@ export default function BookList() {
               </TableFooter>
             </Table>
           </TableContainer>
-          <Box mt={2} textAlign="left">
+          <Box mt={2} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button
               variant="contained"
               className="add-loan"
               onClick={handleAddClick}
             >
               Add Book
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              className="add-loan"
+              onClick={handleDeleteClick}
+            >
+              Delete Book
             </Button>
           </Box>
         </Box>

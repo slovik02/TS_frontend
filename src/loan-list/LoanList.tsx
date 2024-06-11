@@ -124,6 +124,15 @@ export default function LoanList() {
     navigate('/addloan');
   };
 
+  const handleUpdateLoanClick = () => {
+    navigate('/updateloan');
+  };
+
+  const handleDeleteLoanClick = () => {
+    // Implement the logic for deleting a loan here
+    console.log('Delete loan clicked');
+  };
+
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number,
@@ -232,13 +241,29 @@ export default function LoanList() {
               </TableFooter>
             </Table>
           </TableContainer>
-          <Box mt={2}>
+          <Box mt={2} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button
               variant="contained"
               className="add-loan"
               onClick={handleAddLoanClick}
             >
               Add Loan
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              className="add-loan"
+              onClick={handleUpdateLoanClick}
+            >
+              Update Loan
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              className="add-loan"
+              onClick={handleDeleteLoanClick}
+            >
+              Delete Loan
             </Button>
           </Box>
         </Box>

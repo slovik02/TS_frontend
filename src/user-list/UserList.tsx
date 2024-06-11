@@ -124,6 +124,10 @@ export default function UserList() {
     navigate('/adduser');
   };
 
+  const handleUpdateClick = () => {
+    navigate('/updateuser');
+  };
+
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number,
@@ -219,13 +223,23 @@ export default function UserList() {
               </TableFooter>
             </Table>
           </TableContainer>
-          <Box mt={2}>
+          <Box mt={2} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button
               variant="contained"
               className="add-user"
               onClick={handleAddClick}
             >
               Add User
+            </Button>
+            <Button
+              variant="contained"
+              className="add-user"
+              onClick={handleUpdateClick}
+            >
+              Update User
+            </Button>
+            <Button variant="contained" className="add-user">
+              Delete User
             </Button>
           </Box>
         </Box>

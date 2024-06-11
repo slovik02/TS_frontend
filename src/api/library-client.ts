@@ -104,7 +104,7 @@ export class LibraryClient {
 
   public async postUsers(userData: any): Promise<ClientResponse<any | null>> {
     try {
-      const response = await this.client.post('/auth/register', userData);
+      const response = await this.client.post('/user/add', userData);
       return {
         success: true,
         data: response.data,

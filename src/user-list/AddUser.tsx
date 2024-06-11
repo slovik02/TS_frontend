@@ -15,7 +15,6 @@ export default function AddUser() {
   const apiClient: LibraryClient = useApi();
 
   const handleAddUser = () => {
-    // Create a user object with the entered information
     const newUser = {
       username: username,
       password: password,
@@ -28,7 +27,6 @@ export default function AddUser() {
       .then((response) => {
         if (response.success) {
           console.log('User added successfully');
-          // Optionally, you can clear the input fields after successful addition
           setUsername('');
           setPassword('');
           setRole('');
